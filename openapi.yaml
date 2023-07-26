@@ -1,0 +1,143 @@
+openapi: 3.0.1
+info:
+  title: Headless Blog API
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /posts:
+    get:
+      summary: Get blog posts
+      parameters:
+        - name: start_date
+          in: query
+          description: Filter posts by start date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: Filter posts by end date (YYYY-MM-DD)
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: "Maximum number of posts to retrieve (default: 10)"
+          schema:
+            maximum: 10
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Return a list of blog posts
+          content:
+            "*/*":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostIndex"
+    post:
+      summary: Create a new blog post
+      requestBody:
+        content:
+          "*/*":
+            schema:
+              $ref: "#/components/schemas/PostInput"
+        required: true
+      responses:
+        201:
+          description: Blog post created successfully
+          content: {}
+        400:
+          description: Invalid input data
+          content: {}
+      x-codegen-request-body-name: post_data
+  /posts/{post_id}:
+    get:
+      summary: Get a single blog post by ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Return the details of the specified blog post
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/Post"
+        404:
+          description: Blog post not found
+          content: {}
+    put:
+      summary: Update a blog post by ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          "*/*":
+            schema:
+              $ref: "#/components/schemas/PostInput"
+        required: true
+      responses:
+        200:
+          description: Blog post updated successfully
+          content: {}
+        400:
+          description: Invalid input data
+          content: {}
+        404:
+          description: Blog post not found
+          content: {}
+      x-codegen-request-body-name: post_data
+    delete:
+      summary: Delete a blog post by ID
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Blog post deleted successfully
+          content: {}
+        404:
+          description: Blog post not found
+          content: {}
+components:
+  schemas:
+    PostIndex:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        published_at:
+          type: string
+          format: date-time
+    Post:
+      allOf:
+        - $ref: "#/components/schemas/PostIndex"
+        - type: object
+          properties:
+            content:
+              type: string
+    PostInput:
+      required:
+        - content
+        - title
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
