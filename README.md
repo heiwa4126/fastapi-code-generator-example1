@@ -1,4 +1,4 @@
-# fastapi-code-generator-example
+# fastapi-code-generator-example1
 
 [koxudaxi/fastapi-code-generator](https://github.com/koxudaxi/fastapi-code-generator)
 を使ってみる練習。(2023-07)
@@ -14,11 +14,11 @@ ChatAPI に
 > AttributeError: 'NoneType' object has no attribute 'is_array'
 
 と言われてエラーになるので、
-[SwaggerEditor](https://editor-next.swagger.io/)の
+[SwaggerEditor](https://editor-next.swagger.io/) の
 `edit -> Convert to OpenAPI 3.0.x`
 で
 OpenAPI2 から 3 に
-変換して、[openapi.yaml](openapi.yaml) を作る。
+変換して、[openapi.yaml](openapi.yaml) を作った。
 
 で、これに対して:
 
@@ -33,7 +33,9 @@ fastapi-codegen --input openapi.yaml --output mock --model-file interface.py
 ## 要点
 
 - fastapi-code-generator は OpenAPI3 でないとダメみたい (2023-07 現在)
-- `fastapi-code-generator` と `fastapi[all]` が同時に pip できない。pydantic のバージョンがかちあう。 (2023-07 現在)
+  - 最初から ChatAPI に「OpenAPI3 で作って」といえば良かったんだな。
+  - ただ OpenAPI3、2 よりわかりにくいよね?
+- なんだか `fastapi-code-generator` と `fastapi[all]` が同時に pip できない。pydantic のバージョンがかちあう。 (2023-07 現在)
 - 将来 API が変更されたときにはどうするかを考えとかないと...
 
 ## 他メモ
