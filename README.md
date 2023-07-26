@@ -38,6 +38,22 @@ fastapi-codegen --input openapi.yaml --output mock --model-file interface.py
 - なんだか `fastapi-code-generator` と `fastapi[all]` が同時に pip できない。pydantic のバージョンがかちあう。 (2023-07 現在)
 - 将来 API が変更されたときにはどうするかを考えとかないと...
 
+## 実際に FastAPI で動かすにあたって編集したところ
+
+`main.py` で
+
+```python
+from .interface import Post, PostIndex
+```
+
+は
+
+```python
+from interface import Post, PostIndex
+```
+
+にしないとダメだった。
+
 ## 他メモ
 
 mock/ の下は .gitignore にするべきですか? (考え中)
